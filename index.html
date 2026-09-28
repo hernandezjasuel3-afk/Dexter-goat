@@ -9,7 +9,23 @@
     * {
       box-sizing: border-box;
     }
+    #backgroundVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: -1;
+}
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -137,7 +153,18 @@
 </head>
 
 <body>
-
+<video
+  autoplay
+  muted
+  loop
+  playsinline
+  id="backgroundVideo"
+>
+  <source
+    src="From Klickpin.com- Coastal ocean moods for boards that feel current and for thoughtful sharing for endless summer vibes-pin-id-26247610319429817.mp4"
+    type="video/mp4"
+  >
+</video>
   <header>
     <h1>DEXTER CODE</h1>
     <p>Mods • Apps • Archivos</p>
