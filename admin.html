@@ -259,6 +259,151 @@
     SUPABASE_KEY
   );
 
+  const message = document.getElementById("message");
+  const uploadButton = document.getElementById("upload");
+
+  async function checkLogin() {
+    const { data } = await supabaseClient.auth.getSession();
+
+    if (!data.session) {
+      window.location.href = "login.html";
+      return false;
+    }
+
+    return true;
+  }
+
+  checkLogin();
+
+  document.getElementById("logout").addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = "login.html";
+  });
+
+  uploadButton.addEventListener("click", async () => {
+
+    const loggedIn = await checkLogin();
+
+    if (!loggedIn) return;
+
+    const name = document.getElementById("name").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const category = document.getElementById("category").value.trim();
+
+    const imageFile = document.getElementById("image").files[0];
+    const mainFile = document.getElementById("file").files[0];
+
+    if (!name || !mainFile) {
+      message.textContent =
+        "❌ Escribe un nombre y selecciona un archivo.";
+      return;
+    }
+
+    uploadButton.disabled = true;
+    uploadButton.textContent = "Subiendo...";
+    message.textContent = "";
+
+    try {
+
+      const fileName =
+        Date.now() + "-" + mainFile.name.replace(/\s+/g, "-");
+
+      const filePath = "downloads/" + fileName;
+
+      const { error: fileError } =
+        await supabaseClient.storage
+          .from("files")
+          .upload(filePath, mainFile);
+
+      if (fileError) {
+        throw fileError;
+      }
+
+      let imageUrl = "";
+
+      if (imageFile) {
+
+        const imageName =
+          Date.now() + "-image-" +
+          imageFile.name.replace(/\s+/g, "-");
+
+        const imagePath = "images/" + imageName;
+
+        const { error: imageError } =
+          await supabaseClient.storage
+            .from("files")
+            .upload(imagePath, imageFile);
+
+        if (imageError) {
+          throw imageError;
+        }
+
+        const { data: imageData } =
+          supabaseClient.storage
+            .from("files")
+            .getPublicUrl(imagePath);
+
+        imageUrl = imageData.publicUrl;
+      }
+
+      const { data: publicFile } =
+        supabaseClient.storage
+          .from("files")
+          .getPublicUrl(filePath);
+
+      const fileUrl = publicFile.publicUrl;
+
+      const { error: databaseError } =
+        await supabaseClient
+          .from("files")
+          .insert({
+            name: name,
+            description: description,
+            category: category,
+            file_url: fileUrl,
+            image_url: imageUrl,
+            downloads: 0,
+            published: false
+          });
+
+      if (databaseError) {
+        throw databaseError;
+      }
+
+      message.textContent =
+        "✅ Archivo subido correctamente. Está oculto hasta que lo publiques.";
+
+      document.getElementById("name").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("category").value = "";
+      document.getElementById("image").value = "";
+      document.getElementById("file").value = "";
+
+    } catch (error) {
+
+      console.error(error);
+
+      message.textContent =
+        "❌ Error: " + error.message;
+
+    } finally {
+
+      uploadButton.disabled = false;
+      uploadButton.textContent = "⬆️ Subir archivo";
+    }
+
+  });
+</script>
+
+<script>
+  const SUPABASE_URL = "https://pcvvfjaoqfgklkefxxrc.supabase.co/rest/v1/";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjdnZmamFvcWZna2xrZWZ4eHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTk0NjksImV4cCI6MjEwNjEzNTQ2OX0.5nLp2iaS8ABbODen78F0eGHdHD2Uf6-gYsIt_3UsT5M";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
   async function checkLogin() {
     const { data } = await supabaseClient.auth.getSession();
 
