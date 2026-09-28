@@ -230,14 +230,15 @@
               ${file.description || "Sin descripción."}
             </p>
 
-            <a
-              class="download"
-              href="${file.file_url}"
-              target="_blank"
-              download
-            >
-              ⬇️ Descargar
-            </a>
+             <a
+ class="download"
+  href="${file.file_url}"
+  target="_blank"
+  download
+  onclick="registerDownload(${file.id})"
+>
+  ⬇️ Descargar
+</a>
 
           </div>
         `;
@@ -258,7 +259,11 @@
 
       showFiles(filtered);
     });
-
+    async function registerDownload(id) {
+  await supabaseClient.rpc("increment_downloads", {
+    file_id: id
+  });
+    }
     loadFiles();
   </script>
 
