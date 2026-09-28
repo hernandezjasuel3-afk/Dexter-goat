@@ -1,1 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dexter Code</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0b12;
+      color: white;
+    }
+
+    header {
+      background: linear-gradient(135deg, #111122, #1b1b35);
+      padding: 25px 15px;
+      text-align: center;
+      border-bottom: 1px solid #29294a;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #7c5cff;
+      text-shadow: 0 0 15px #7c5cff;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #b9b9d0;
+    }
+
+    .search {
+      padding: 20px 15px;
+      text-align: center;
+    }
+
+    #search {
+      width: 100%;
+      max-width: 600px;
+      padding: 14px 18px;
+      border: 1px solid #34345a;
+      border-radius: 12px;
+      background: #151522;
+      color: white;
+      outline: none;
+      font-size: 16px;
+    }
+
+    #search::placeholder {
+      color: #77778f;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 10px 15px 40px;
+    }
+
+    #fileGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #151522;
+      border: 1px solid #29294a;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.35);
+    }
+
+    .card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      color: white;
+      font-size: 20px;
+    }
+
+    .card p {
+      color: #aaaac0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .category {
+      display: inline-block;
+      margin: 5px 0 12px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #272744;
+      color: #9f8cff;
+      font-size: 12px;
+    }
+
+    .download {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      background: #7c5cff;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .download:hover {
+      background: #6848ed;
+    }
+
+    .empty {
+      text-align: center;
+      color: #77778f;
+      padding: 40px 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>DEXTER CODE</h1>
+    <p>Mods • Apps • Archivos</p>
+  </header>
+
+  <div class="search">
+    <input
+      type="text"
+      id="search"
+      placeholder="🔎 Buscar archivos..."
+    >
+  </div>
+
+  <main class="container">
+    <div id="fileGrid">
+      <div class="empty">Cargando archivos...</div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "https://pcvvfjaoqfgklkefxxrc.supabase.co/rest/v1/";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjdnZmamFvcWZna2xrZWZ4eHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTk0NjksImV4cCI6MjEwNjEzNTQ2OX0.5nLp2iaS8ABbODen78F0eGHdHD2Uf6-gYsIt_3UsT5M";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const fileGrid = document.getElementById("fileGrid");
+    const search = document.getElementById("search");
+
+    let files = [];
+
+    async function loadFiles() {
+      fileGrid.innerHTML =
+        '<div class="empty">Cargando archivos...</div>';
+
+      const { data, error } = await supabaseClient
+        .from("files")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        fileGrid.innerHTML =
+          '<div class="empty">❌ Error al cargar los archivos.</div>';
+        return;
+      }
+
+      files = data || [];
+      showFiles(files);
+    }
+
+    function showFiles(list) {
+
+      if (list.length === 0) {
+        fileGrid.innerHTML =
+          '<div class="empty">No hay archivos publicados todavía.</div>';
+        return;
+      }
+
+      fileGrid.innerHTML = "";
+
+      list.forEach(file => {
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const image = file.image_url
+          ? `<img src="${file.image_url}" alt="${file.name}">`
+          : "";
+
+        card.innerHTML = `
+          ${image}
+
+          <div class="card-content">
+
+            <h2>${file.name}</h2>
+
+            ${
+              file.category
+                ? `<span class="category">${file.category}</span>`
+                : ""
+            }
+
+            <p>
+              ${file.description || "Sin descripción."}
+            </p>
+
+            <a
+              class="download"
+              href="${file.file_url}"
+              target="_blank"
+              download
+            >
+              ⬇️ Descargar
+            </a>
+
+          </div>
+        `;
+
+        fileGrid.appendChild(card);
+      });
+    }
+
+    search.addEventListener("input", () => {
+
+      const text = search.value.toLowerCase();
+
+      const filtered = files.filter(file =>
+        (file.name || "").toLowerCase().includes(text) ||
+        (file.description || "").toLowerCase().includes(text) ||
+        (file.category || "").toLowerCase().includes(text)
+      );
+
+      showFiles(filtered);
+    });
+
+    loadFiles();
+  </script>
+
+</body>
+</html>
