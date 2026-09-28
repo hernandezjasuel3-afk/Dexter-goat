@@ -464,7 +464,8 @@ async function loadFiles() {
   if (error) {
 
     fileList.innerHTML =
-      "❌ Error al cargar archivos.";
+  "❌ Error al cargar archivos: " +
+  error.message;
 
     console.error(error);
 
