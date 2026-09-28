@@ -3,420 +3,632 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Dexter Code - Panel</title>
+  <title>Panel - Dexter Mods</title>
 
   <style>
     * {
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
     }
 
     body {
       margin: 0;
-      background: #0b0b0f;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #0b0b12;
       color: white;
-      min-height: 100vh;
-    }
-
-    header {
-      background: #111118;
-      border-bottom: 1px solid #29293a;
-      padding: 18px;
-    }
-
-    .header-content {
-      width: 92%;
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .logout {
-      background: #29293a;
-      color: white;
-      border: 0;
-      border-radius: 9px;
-      padding: 10px 14px;
-      cursor: pointer;
     }
 
     .container {
-      width: 92%;
-      max-width: 1100px;
-      margin: 25px auto;
-    }
-
-    .panel {
-      background: #15151e;
-      border: 1px solid #29293a;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
+      max-width: 900px;
+      margin: auto;
     }
 
     h1 {
-      margin-top: 0;
+      color: #7c5cff;
+      text-align: center;
     }
 
-    h2 {
-      margin-top: 0;
-    }
-
-    label {
-      display: block;
-      margin: 15px 0 7px;
-      font-size: 14px;
+    .box {
+      background: #151522;
+      border: 1px solid #29294a;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
     }
 
     input,
-    textarea,
-    select {
+    textarea {
       width: 100%;
       padding: 13px;
+      margin: 7px 0;
       border-radius: 10px;
-      border: 1px solid #29293a;
-      background: #0f0f15;
+      border: 1px solid #34345a;
+      background: #0b0b12;
       color: white;
-      outline: none;
+      font-size: 15px;
     }
 
     textarea {
-      min-height: 100px;
+      min-height: 90px;
       resize: vertical;
     }
 
     button {
-      margin-top: 18px;
-      padding: 13px 18px;
       border: 0;
       border-radius: 10px;
-      background: #5865f2;
-      color: white;
-      font-weight: bold;
+      padding: 11px 15px;
       cursor: pointer;
+      font-weight: bold;
+      color: white;
+      margin: 4px;
     }
 
-    button:hover {
-      background: #4752c4;
+    #upload {
+      background: #7c5cff;
+      width: 100%;
+      margin-top: 10px;
     }
 
-    .file-item {
-      background: #101017;
-      border: 1px solid #29293a;
-      border-radius: 12px;
+    #logout {
+      background: #e53935;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .file-card {
+      background: #10101a;
+      border: 1px solid #29294a;
+      border-radius: 14px;
       padding: 15px;
       margin-top: 12px;
     }
 
+    .file-card h3 {
+      margin-top: 0;
+      color: white;
+    }
+
     .status {
-      display: inline-block;
-      padding: 5px 8px;
-      border-radius: 7px;
-      font-size: 12px;
-      margin-top: 8px;
+      color: #9f8cff;
+      margin: 8px 0;
     }
 
-    .published {
-      background: #193b27;
-      color: #7dffa5;
+    .publish {
+      background: #20a060;
     }
 
-    .hidden {
-      background: #3b3030;
-      color: #ff9a9a;
+    .hide {
+      background: #d88900;
+    }
+
+    .delete {
+      background: #d32f2f;
     }
 
     #message {
-      margin-top: 15px;
-      color: #aaaabb;
+      text-align: center;
+      margin-top: 12px;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="header-content">
+<div class="container">
 
-      <div class="logo">
-        DEXTER CODE
-      </div>
+  <h1>DEXTER MODS</h1>
 
-      <button class="logout" id="logout">
-        Cerrar sesión
-      </button>
+  <div class="box">
 
-    </div>
-  </header>
+    <h2>⬆️ Subir archivo</h2>
 
-  <main class="container">
+    <input
+      type="text"
+      id="name"
+      placeholder="Nombre del archivo"
+    >
 
-    <div class="panel">
+    <textarea
+      id="description"
+      placeholder="Descripción"
+    ></textarea>
 
-      <h1>
-        Panel de administrador
-      </h1>
+    <input
+      type="text"
+      id="category"
+      placeholder="Categoría"
+    >
 
-      <p>
-        Desde aquí podrás administrar tus archivos.
-      </p>
+    <label>Imagen:</label>
+    <input
+      type="file"
+      id="image"
+      accept="image/*"
+    >
 
-    </div>
+    <label>Archivo:</label>
+    <input
+      type="file"
+      id="file"
+    >
 
-    <div class="panel">
+    <button id="upload">
+      ⬆️ Subir archivo
+    </button>
 
-      <h2>
-        ➕ Subir archivo
-      </h2>
+    <div id="message"></div>
 
-      <label>
-        Nombre del archivo
-      </label>
+  </div>
 
-      <input
-        id="name"
-        type="text"
-        placeholder="Ej. Minecraft Mod"
-      >
+  <div class="box">
 
-      <label>
-        Descripción
-      </label>
+    <h2>📁 Mis archivos</h2>
 
-      <textarea
-        id="description"
-        placeholder="Escribe una descripción"
-      ></textarea>
-
-      <label>
-        Categoría
-      </label>
-
-      <input
-        id="category"
-        type="text"
-        placeholder="Ej. Mods"
-      >
-
-      <label>
-        Imagen
-      </label>
-
-      <input
-        id="image"
-        type="file"
-        accept="image/*"
-      >
-
-      <label>
-        Archivo para descargar
-      </label>
-
-      <input
-        id="file"
-        type="file"
-      >
-
-      <button id="upload">
-        ⬆️ Subir archivo
-      </button>
-
-      <div id="message"></div>
-
+    <div id="fileList">
+      Cargando archivos...
     </div>
 
-    <div class="panel">
+  </div>
 
-      <h2>
-        📁 Mis archivos
-      </h2>
+  <button id="logout">
+    🚪 Cerrar sesión
+  </button>
 
-      <div id="fileList">
-        Cargando...
-      </div>
-
-    </div>
-
-  </main>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  const SUPABASE_URL = "https://pcvvfjaoqfgklkefxxrc.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjdnZmamFvcWZna2xrZWZ4eHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTk0NjksImV4cCI6MjEwNjEzNTQ2OX0.5nLp2iaS8ABbODen78F0eGHdHD2Uf6-gYsIt_3UsT5M";
 
-  const supabaseClient = window.supabase.createClient(
+const SUPABASE_URL =
+  "https://pcvvfjaoqfgklkefxxrc.supabase.co";
+
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjdnZmamFvcWZna2xrZWZ4eHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTk0NjksImV4cCI6MjEwNjEzNTQ2OX0.5nLp2iaS8ABbODen78F0eGHdHD2Uf6-gYsIt_3UsT5M";
+
+const supabaseClient =
+  window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
-  const message = document.getElementById("message");
-  const uploadButton = document.getElementById("upload");
+const message =
+  document.getElementById("message");
 
-  async function checkLogin() {
-    const { data } = await supabaseClient.auth.getSession();
+const uploadButton =
+  document.getElementById("upload");
 
-    if (!data.session) {
-      window.location.href = "login.html";
-      return false;
-    }
+const fileList =
+  document.getElementById("fileList");
 
-    return true;
+
+async function checkLogin() {
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if (!data.session) {
+
+    window.location.href =
+      "login.html";
+
+    return false;
   }
 
-  checkLogin();
+  return true;
+}
 
-  document.getElementById("logout").addEventListener("click", async () => {
+
+checkLogin();
+
+
+document
+  .getElementById("logout")
+  .addEventListener("click", async () => {
+
     await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
+
+    window.location.href =
+      "login.html";
+
   });
 
-  uploadButton.addEventListener("click", async () => {
 
-    const loggedIn = await checkLogin();
+uploadButton
+  .addEventListener("click", async () => {
+
+    const loggedIn =
+      await checkLogin();
 
     if (!loggedIn) return;
 
-    const name = document.getElementById("name").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const category = document.getElementById("category").value.trim();
 
-    const imageFile = document.getElementById("image").files[0];
-    const mainFile = document.getElementById("file").files[0];
+    const name =
+      document
+        .getElementById("name")
+        .value
+        .trim();
+
+    const description =
+      document
+        .getElementById("description")
+        .value
+        .trim();
+
+    const category =
+      document
+        .getElementById("category")
+        .value
+        .trim();
+
+    const imageFile =
+      document
+        .getElementById("image")
+        .files[0];
+
+    const mainFile =
+      document
+        .getElementById("file")
+        .files[0];
+
 
     if (!name || !mainFile) {
+
       message.textContent =
         "❌ Escribe un nombre y selecciona un archivo.";
+
       return;
     }
 
+
     uploadButton.disabled = true;
-    uploadButton.textContent = "Subiendo...";
+
+    uploadButton.textContent =
+      "Subiendo...";
+
     message.textContent = "";
+
 
     try {
 
       const fileName =
-        Date.now() + "-" + mainFile.name.replace(/\s+/g, "-");
+        Date.now() +
+        "-" +
+        mainFile.name.replace(/\s+/g, "-");
 
-      const filePath = "downloads/" + fileName;
+      const filePath =
+        "downloads/" +
+        fileName;
+
 
       const { error: fileError } =
-        await supabaseClient.storage
+        await supabaseClient
+          .storage
           .from("files")
-          .upload(filePath, mainFile);
+          .upload(
+            filePath,
+            mainFile
+          );
 
-      if (fileError) {
+
+      if (fileError)
         throw fileError;
-      }
+
 
       let imageUrl = "";
+
 
       if (imageFile) {
 
         const imageName =
-          Date.now() + "-image-" +
+          Date.now() +
+          "-image-" +
           imageFile.name.replace(/\s+/g, "-");
 
-        const imagePath = "images/" + imageName;
+        const imagePath =
+          "images/" +
+          imageName;
+
 
         const { error: imageError } =
-          await supabaseClient.storage
+          await supabaseClient
+            .storage
             .from("files")
-            .upload(imagePath, imageFile);
+            .upload(
+              imagePath,
+              imageFile
+            );
 
-        if (imageError) {
+
+        if (imageError)
           throw imageError;
-        }
+
 
         const { data: imageData } =
-          supabaseClient.storage
+          supabaseClient
+            .storage
             .from("files")
-            .getPublicUrl(imagePath);
+            .getPublicUrl(
+              imagePath
+            );
 
-        imageUrl = imageData.publicUrl;
+
+        imageUrl =
+          imageData.publicUrl;
       }
 
-      const { data: publicFile } =
-        supabaseClient.storage
-          .from("files")
-          .getPublicUrl(filePath);
 
-      const fileUrl = publicFile.publicUrl;
+      const { data: publicFile } =
+        supabaseClient
+          .storage
+          .from("files")
+          .getPublicUrl(
+            filePath
+          );
+
+
+      const fileUrl =
+        publicFile.publicUrl;
+
 
       const { error: databaseError } =
         await supabaseClient
           .from("files")
           .insert({
+
             name: name,
+
             description: description,
+
             category: category,
+
             file_url: fileUrl,
+
             image_url: imageUrl,
+
             downloads: 0,
+
             published: false
+
           });
 
-      if (databaseError) {
+
+      if (databaseError)
         throw databaseError;
-      }
+
 
       message.textContent =
-        "✅ Archivo subido correctamente. Está oculto hasta que lo publiques.";
+        "✅ Archivo subido correctamente.";
 
-      document.getElementById("name").value = "";
-      document.getElementById("description").value = "";
-      document.getElementById("category").value = "";
-      document.getElementById("image").value = "";
-      document.getElementById("file").value = "";
+      document
+        .getElementById("name")
+        .value = "";
 
-    } catch (error) {
+      document
+        .getElementById("description")
+        .value = "";
+
+      document
+        .getElementById("category")
+        .value = "";
+
+      document
+        .getElementById("image")
+        .value = "";
+
+      document
+        .getElementById("file")
+        .value = "";
+
+
+      loadFiles();
+
+    }
+
+    catch (error) {
 
       console.error(error);
 
       message.textContent =
-        "❌ Error: " + error.message;
+        "❌ Error: " +
+        error.message;
 
-    } finally {
+    }
+
+    finally {
 
       uploadButton.disabled = false;
-      uploadButton.textContent = "⬆️ Subir archivo";
+
+      uploadButton.textContent =
+        "⬆️ Subir archivo";
+
     }
 
   });
-</script>
 
-<script>
-  const SUPABASE_URL = "https://pcvvfjaoqfgklkefxxrc.supabase.co/rest/v1/";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjdnZmamFvcWZna2xrZWZ4eHJjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTk0NjksImV4cCI6MjEwNjEzNTQ2OX0.5nLp2iaS8ABbODen78F0eGHdHD2Uf6-gYsIt_3UsT5M";
 
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+async function loadFiles() {
 
-  async function checkLogin() {
-    const { data } = await supabaseClient.auth.getSession();
+  const { data, error } =
+    await supabaseClient
+      .from("files")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
-    if (!data.session) {
-      window.location.href = "login.html";
-    }
+
+  if (error) {
+
+    fileList.innerHTML =
+      "❌ Error al cargar archivos.";
+
+    console.error(error);
+
+    return;
   }
 
-  checkLogin();
 
-  document.getElementById("logout").addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
-    window.location.href = "login.html";
+  if (!data || data.length === 0) {
+
+    fileList.innerHTML =
+      "No hay archivos.";
+
+    return;
+  }
+
+
+  fileList.innerHTML = "";
+
+
+  data.forEach(file => {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "file-card";
+
+
+    card.innerHTML = `
+
+      <h3>
+        ${file.name}
+      </h3>
+
+      <p>
+        ${file.description || ""}
+      </p>
+
+      <p>
+        Categoría:
+        ${file.category || "Sin categoría"}
+      </p>
+
+      <div class="status">
+        Estado:
+        ${
+          file.published
+            ? "🟢 Publicado"
+            : "🔴 Oculto"
+        }
+      </div>
+
+      <button
+        class="${
+          file.published
+            ? "hide"
+            : "publish"
+        }"
+        onclick="togglePublish(
+          '${file.id}',
+          ${file.published}
+        )"
+      >
+        ${
+          file.published
+            ? "🔴 Ocultar"
+            : "🟢 Publicar"
+        }
+      </button>
+
+      <button
+        class="delete"
+        onclick="deleteFile(
+          '${file.id}'
+        )"
+      >
+        🗑️ Eliminar
+      </button>
+
+    `;
+
+
+    fileList.appendChild(card);
+
   });
-</script></body>
+
+}
+
+
+async function togglePublish(
+  id,
+  currentStatus
+) {
+
+  const { error } =
+    await supabaseClient
+      .from("files")
+      .update({
+        published:
+          !currentStatus
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    alert(
+      "Error: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  loadFiles();
+
+}
+
+
+async function deleteFile(id) {
+
+  const confirmDelete =
+    confirm(
+      "¿Seguro que quieres eliminar este archivo?"
+    );
+
+
+  if (!confirmDelete)
+    return;
+
+
+  const { error } =
+    await supabaseClient
+      .from("files")
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    alert(
+      "Error: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  loadFiles();
+
+}
+
+
+loadFiles();
+
+</script>
+
+</body>
 </html>
